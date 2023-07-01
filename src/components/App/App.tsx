@@ -30,7 +30,7 @@ function App() {
         </S.Side>
         <S.Main>
           <S.MainHeader>
-            <p>{products?.length} Product(s) found</p>
+            <p data-testid="product-count">{products?.length} Product(s) found</p>
           </S.MainHeader>
           <Products products={products} />
         </S.Main>
