@@ -1,5 +1,5 @@
-import ProductListPage from './objects/ProductListPage.js';
-import CartDrawer from './objects/CartDrawer.js';
+import ProductListPage from './objects/ProductListPage';
+import CartDrawer from './objects/CartDrawer';
 
 describe('Cart Functionality', function () {
   let cartDrawer;
