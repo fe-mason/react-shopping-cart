@@ -11,23 +11,30 @@ export default class CartDrawer {
     return cy.findByTestId('cart-quantity-indicator');
   }
 
-  // getCartItem(productName) {
-  //     return cy.contains('selector', productName);
-  // }
+  getCartItem(productName) {
+    return this.getCartContainer().within(() => {
+      cy.contains(productName).parents().eq(1);
 
-  // removeItem(productName) {
-  //     this.getCartItem(productName).findByTestId('selector').click();
-  // }
+    });
+  }
 
-  // increaseQuantity(productName, quantity) {
-  //     this.getCartItem(productName).findByTestId('selector').click();
-  // }
+  getCartSubtotal() {
+    return cy.get('[data-testid="subtotal-price-value"]')
+  };
 
-  // decreaseQuantity(productName, quantity) {
-  //     this.getCartItem(productName).findByTestId('selector').click();
-  // }
+  removeItem(productName) {
+      this.getCartItem(productName).findByTestId('trigger-remove-cart-product').click();
+  }
 
-  // proceedToCheckout() {
-  //     findByTestId('selector').click();
-  // }
+  increaseQuantity(productName) {
+      this.getCartItem(productName).findByTestId('trigger-increase-product-quantity').click();
+  }
+
+  decreaseQuantity(productName) {
+      this.getCartItem(productName).findByTestId('trigger-decrease-product-quantity').click();
+  }
+
+  proceedToCheckout() {
+      cy.findByTestId('trigger-proceed-to-checkout').click();
+  }
 }

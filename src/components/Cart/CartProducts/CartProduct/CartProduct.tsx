@@ -28,7 +28,7 @@ const CartProduct = ({ product }: IProps) => {
 
   return (
     <S.Container>
-      <S.DeleteButton
+      <S.DeleteButton data-testid="trigger-remove-cart-product"
         onClick={handleRemoveProduct}
         title="remove product from cart"
       />
@@ -46,13 +46,13 @@ const CartProduct = ({ product }: IProps) => {
       <S.Price>
         <p>{`${currencyFormat}  ${formatPrice(price, currencyId)}`}</p>
         <div>
-          <S.ChangeQuantity
+          <S.ChangeQuantity data-testid="trigger-decrease-product-quantity"
             onClick={handleDecreaseProductQuantity}
             disabled={quantity === 1 ? true : false}
           >
             -
-          </S.ChangeQuantity>
-          <S.ChangeQuantity onClick={handleIncreaseProductQuantity}>
+          </S.ChangeQuantity >
+          <S.ChangeQuantity data-testid="trigger-increase-product-quantity" onClick={handleIncreaseProductQuantity}>
             +
           </S.ChangeQuantity>
         </div>

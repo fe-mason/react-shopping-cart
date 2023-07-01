@@ -47,12 +47,12 @@ const Cart = () => {
             <S.HeaderTitle>Cart</S.HeaderTitle>
           </S.CartContentHeader>
 
-          <CartProducts products={products} />
+          <CartProducts products={products} data-testid="cart-products-container" />
 
           <S.CartFooter>
             <S.Sub>SUBTOTAL</S.Sub>
             <S.SubPrice>
-              <S.SubPriceValue>{`${total.currencyFormat} ${formatPrice(
+              <S.SubPriceValue data-testid="subtotal-price-value">{`${total.currencyFormat} ${formatPrice(
                 total.totalPrice,
                 total.currencyId
               )}`}</S.SubPriceValue>
@@ -69,7 +69,7 @@ const Cart = () => {
                 ) : null}
               </S.SubPriceInstallment>
             </S.SubPrice>
-            <S.CheckoutButton onClick={handleCheckout} autoFocus>
+            <S.CheckoutButton data-testid="trigger-proceed-to-checkout" onClick={handleCheckout} autoFocus>
               Checkout
             </S.CheckoutButton>
           </S.CartFooter>

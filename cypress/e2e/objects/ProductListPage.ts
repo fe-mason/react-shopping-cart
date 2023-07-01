@@ -7,6 +7,11 @@ export default class ProductListPage {
     return cy.get('[data-testid="product-count"]');
   }
 
+  scrollToSelectedProduct(selectedProduct) {
+  cy.contains(selectedProduct).scrollIntoView()
+  .should('be.visible')
+  }
+
   selectProduct(productName) {
     cy.contains(productName)
       .first()
@@ -14,5 +19,9 @@ export default class ProductListPage {
       .within(() => {
         cy.findByTestId('trigger-add-to-cart').click();
       });
+  }
+
+  filterBySize(sizeSelection) {
+    cy.get(`input[type="checkbox"][data-testid="checkbox"][value="${sizeSelection}"]`).check({ force: true });
   }
 }
