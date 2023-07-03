@@ -7,12 +7,12 @@ export default class ProductListPage {
     return cy.get('[data-testid="product-count"]');
   }
 
-  scrollToSelectedProduct(selectedProduct) {
-  cy.contains(selectedProduct).scrollIntoView()
-  .should('be.visible')
+  scrollToSelectedProduct(selectedProduct: string) {
+    cy.contains(selectedProduct).scrollIntoView()
+    .should('be.visible')
   }
 
-  selectProduct(productName) {
+  selectProduct(productName: string) {
     cy.contains(productName)
       .first()
       .parent()
@@ -21,7 +21,7 @@ export default class ProductListPage {
       });
   }
 
-  filterBySize(sizeSelection) {
+  filterBySize(sizeSelection: string) {
     cy.get(`input[type="checkbox"][data-testid="checkbox"][value="${sizeSelection}"]`).check({ force: true });
   }
 }

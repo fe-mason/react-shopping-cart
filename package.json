@@ -24,7 +24,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "e2e": "npx cypress open",
-    "e2e:run": "npx cypress run",
+    "e2e:cli": "npx cypress run",
     "test": "react-scripts test --silent",
     "test:watch": "npm test -- --watch",
     "test:coverage": "npm test -- --coverage --watchAll",

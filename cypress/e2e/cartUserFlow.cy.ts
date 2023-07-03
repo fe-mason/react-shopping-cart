@@ -2,8 +2,8 @@ import ProductListPage from './objects/ProductListPage';
 import CartDrawer from './objects/CartDrawer';
 
 describe('Cart Functionality', function () {
-  let cartDrawer;
-  let productListPage;
+  let cartDrawer: CartDrawer;
+  let productListPage: ProductListPage;
 
   beforeEach(() => {
     cartDrawer = new CartDrawer();
@@ -11,7 +11,6 @@ describe('Cart Functionality', function () {
 
     productListPage.visit();
     cy.window().its('document.readyState').should('eq', 'complete');
-    
     cy.get('[data-testid="product-count"]').should('not.contain.text', '0 Product(s) found');
   });
 
@@ -23,26 +22,34 @@ describe('Cart Functionality', function () {
     cartDrawer.getCartQuantity().should('contain.text', '0');
   });
 
-  it('Adds product item to cart and edits cart contents', function () {
+  it('Selects a product item and adds it to the cart', function () {
     const productSelection = 'Marine Blue T-shirt';
     const sizeSelection = 'XL';
 
     productListPage.filterBySize(`${sizeSelection}`);
     productListPage.scrollToSelectedProduct(productSelection);
-
     productListPage.selectProduct(`${productSelection}`);
 
-    cartDrawer.getCartContainer().should('contain.text', `${productSelection}`);
-    cartDrawer.getCartQuantity().should('have.text', '1'); //TODO: test this doesn't work for e.g. '10', '11'
+    cartDrawer.getCartItem(productSelection).should('contain.text', `${productSelection}`);
+    cartDrawer.getCartQuantity().should('have.text', '1');
+  });
 
+  it('Adds a product item to the cart and edits cart contents', function () {
+    const productSelection = 'Marine Blue T-shirt';
+
+    productListPage.selectProduct(`${productSelection}`);
     cartDrawer.getCartItem(`${productSelection}`);
+
+    //increase item quantity
     cartDrawer.increaseQuantity(`${productSelection}`);
     cartDrawer.increaseQuantity(`${productSelection}`);
     cartDrawer.getCartQuantity().should('have.text', '3');
 
+    //decrease item quantity
     cartDrawer.decreaseQuantity(`${productSelection}`);
     cartDrawer.getCartQuantity().should('have.text', '2');
 
+    //remove item from cart
     cartDrawer.removeItem(`${productSelection}`);
     cartDrawer
     .getCartContainer()
@@ -50,12 +57,11 @@ describe('Cart Functionality', function () {
     cartDrawer.getCartQuantity().should('contain.text', '0');
   });
 
-  it('Adds product item to cart and proceeds to checkout', function () {
+  it('Adds a product item to the cart and proceeds to checkout', function () {
     const productSelection = 'Cropped Stay Groovy off white';
 
     productListPage.selectProduct(productSelection);
-
-    cartDrawer.getCartContainer().should('contain.text', `${productSelection}`);
+    cartDrawer.getCartItem(productSelection).should('contain.text', `${productSelection}`);
     cartDrawer.getCartQuantity().should('have.text', '1');
     cartDrawer.getCartSubtotal().invoke('text').then(($subtotal) => {
       cartDrawer.proceedToCheckout();

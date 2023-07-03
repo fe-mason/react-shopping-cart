@@ -11,10 +11,9 @@ export default class CartDrawer {
     return cy.findByTestId('cart-quantity-indicator');
   }
 
-  getCartItem(productName) {
+  getCartItem(productName: string) {
     return this.getCartContainer().within(() => {
       cy.contains(productName).parents().eq(1);
-
     });
   }
 
@@ -22,19 +21,19 @@ export default class CartDrawer {
     return cy.get('[data-testid="subtotal-price-value"]')
   };
 
-  removeItem(productName) {
-      this.getCartItem(productName).findByTestId('trigger-remove-cart-product').click();
+  removeItem(productName: string) {
+    this.getCartItem(productName).findByTestId('trigger-remove-cart-product').click();
   }
 
-  increaseQuantity(productName) {
-      this.getCartItem(productName).findByTestId('trigger-increase-product-quantity').click();
+  increaseQuantity(productName: string) {
+    this.getCartItem(productName).findByTestId('trigger-increase-product-quantity').click();
   }
 
-  decreaseQuantity(productName) {
-      this.getCartItem(productName).findByTestId('trigger-decrease-product-quantity').click();
+  decreaseQuantity(productName: string) {
+    this.getCartItem(productName).findByTestId('trigger-decrease-product-quantity').click();
   }
 
   proceedToCheckout() {
-      cy.findByTestId('trigger-proceed-to-checkout').click();
+    cy.findByTestId('trigger-proceed-to-checkout').click();
   }
 }
