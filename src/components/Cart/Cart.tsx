@@ -26,7 +26,7 @@ const Cart = () => {
 
   return (
     <S.Container isOpen={isOpen}>
-      <S.CartButton onClick={handleToggleCart(isOpen)}>
+      <S.CartButton onClick={handleToggleCart(isOpen)} data-testid="trigger-cart-drawer-open">
         {isOpen ? (
           <span>X</span>
         ) : (
@@ -39,20 +39,20 @@ const Cart = () => {
       </S.CartButton>
 
       {isOpen && (
-        <S.CartContent>
+        <S.CartContent data-testid="cart-content-container">
           <S.CartContentHeader>
             <S.CartIcon large>
-              <S.CartQuantity>{total.productQuantity}</S.CartQuantity>
+              <S.CartQuantity data-testid="cart-quantity-indicator">{total.productQuantity}</S.CartQuantity>
             </S.CartIcon>
             <S.HeaderTitle>Cart</S.HeaderTitle>
           </S.CartContentHeader>
 
-          <CartProducts products={products} />
+          <CartProducts products={products} data-testid="cart-products-container" />
 
           <S.CartFooter>
             <S.Sub>SUBTOTAL</S.Sub>
             <S.SubPrice>
-              <S.SubPriceValue>{`${total.currencyFormat} ${formatPrice(
+              <S.SubPriceValue data-testid="subtotal-price-value">{`${total.currencyFormat} ${formatPrice(
                 total.totalPrice,
                 total.currencyId
               )}`}</S.SubPriceValue>
@@ -69,7 +69,7 @@ const Cart = () => {
                 ) : null}
               </S.SubPriceInstallment>
             </S.SubPrice>
-            <S.CheckoutButton onClick={handleCheckout} autoFocus>
+            <S.CheckoutButton data-testid="trigger-proceed-to-checkout" onClick={handleCheckout} autoFocus>
               Checkout
             </S.CheckoutButton>
           </S.CartFooter>
