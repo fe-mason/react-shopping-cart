@@ -4,7 +4,8 @@ export default class ProductListPage {
   }
 
   getProductListResults() {
-    return cy.get('[data-testid="product-count"]');
+    return cy.findByTestId('product-count');
+
   }
 
   scrollToSelectedProduct(selectedProduct: string) {
@@ -22,6 +23,6 @@ export default class ProductListPage {
   }
 
   filterBySize(sizeSelection: string) {
-    cy.get(`input[type="checkbox"][data-testid="checkbox"][value="${sizeSelection}"]`).check({ force: true });
+    cy.get(`span[data-testid="trigger-check"]`).contains(sizeSelection).click();
   }
 }
