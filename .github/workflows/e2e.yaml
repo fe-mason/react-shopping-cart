@@ -1,0 +1,13 @@
+name: E2E in docker container
+on: push
+jobs:
+  cypress-run:
+    runs-on: ubuntu-22.04
+    # Cypress Docker image with Chrome v106
+    # and Firefox v106 pre-installed
+    container: cypress/included:12.17.1
+    steps:
+      - uses: actions/checkout@v3
+      - uses: cypress-io/github-action@v5
+        with:
+          start: npm start
