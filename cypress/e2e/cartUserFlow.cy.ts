@@ -11,7 +11,10 @@ describe('Cart Functionality', function () {
 
     productListPage.visit();
     cy.window().its('document.readyState').should('eq', 'complete');
-    cy.get('[data-testid="product-count"]').should('not.contain.text', '0 Product(s) found');
+    cy.findAllByTestId('product-count').should(
+      'not.have.text',
+      '0 Product(s) found'
+    );
   });
 
   it('Shows the cart empty state', function () {
@@ -19,7 +22,21 @@ describe('Cart Functionality', function () {
     cartDrawer
       .getCartContainer()
       .should('contain.text', 'Add some products in the cart');
-    cartDrawer.getCartQuantity().should('contain.text', '0');
+    cartDrawer.getCartQuantity().should('have.text', '0');
+  });
+
+  it('Should allow user to browse for a a product item and add it to the cart', function () {
+    productListPage.getLastProductTitle().then(() => {
+      cy.get('@lastProductTitle').then((productTitle) => {
+        const productTitleString = productTitle.toString();
+        productListPage.scrollToSelectedProduct(productTitleString);
+        productListPage.selectProduct(productTitleString);
+        cartDrawer
+          .getCartItem(productTitleString)
+          .should('contain.text', `${productTitleString}`);
+        cartDrawer.getCartQuantity().should('have.text', '1');
+      });
+    });
   });
 
   it('Selects a product item and adds it to the cart', function () {
@@ -28,9 +45,10 @@ describe('Cart Functionality', function () {
 
     productListPage.filterBySize(`${sizeSelection}`);
     productListPage.scrollToSelectedProduct(productSelection);
-    productListPage.selectProduct(`${productSelection}`);
-
-    cartDrawer.getCartItem(productSelection).should('contain.text', `${productSelection}`);
+    productListPage.selectProduct(`${productSelection}`)
+    cartDrawer
+      .getCartItem(productSelection)
+      .should('contain.text', `${productSelection}`);
     cartDrawer.getCartQuantity().should('have.text', '1');
   });
 
@@ -42,6 +60,7 @@ describe('Cart Functionality', function () {
 
     //increase item quantity
     cartDrawer.increaseQuantity(`${productSelection}`);
+    cartDrawer.getCartQuantity().should('have.text', '2');
     cartDrawer.increaseQuantity(`${productSelection}`);
     cartDrawer.getCartQuantity().should('have.text', '3');
 
@@ -52,8 +71,8 @@ describe('Cart Functionality', function () {
     //remove item from cart
     cartDrawer.removeItem(`${productSelection}`);
     cartDrawer
-    .getCartContainer()
-    .should('contain.text', 'Add some products in the cart');
+      .getCartContainer()
+      .should('contain.text', 'Add some products in the cart');
     cartDrawer.getCartQuantity().should('contain.text', '0');
   });
 
@@ -61,13 +80,18 @@ describe('Cart Functionality', function () {
     const productSelection = 'Cropped Stay Groovy off white';
 
     productListPage.selectProduct(productSelection);
-    cartDrawer.getCartItem(productSelection).should('contain.text', `${productSelection}`);
+    cartDrawer
+      .getCartItem(productSelection)
+      .should('contain.text', `${productSelection}`);
     cartDrawer.getCartQuantity().should('have.text', '1');
-    cartDrawer.getCartSubtotal().invoke('text').then(($subtotal) => {
-      cartDrawer.proceedToCheckout();
-      cy.on('window:alert',(text)=>{
-        expect(text).to.contain(`Checkout - Subtotal: ${$subtotal}`);
-      })
-    })
+    cartDrawer
+      .getCartSubtotal()
+      .invoke('text')
+      .then(($subtotal) => {
+        cartDrawer.proceedToCheckout();
+        cy.on('window:alert', (text) => {
+          expect(text).to.eq(`Checkout - Subtotal: ${$subtotal}`);
+        });
+      });
   });
 });

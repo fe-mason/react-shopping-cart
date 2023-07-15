@@ -5,7 +5,21 @@ export default class ProductListPage {
 
   getProductListResults() {
     return cy.findByTestId('product-count');
+  }
 
+  getProductItemTitles() {
+    return cy.findAllByTestId('product-container').then(($el) => {
+      return $el.map((index, element) => {
+        const fullText = Cypress.$(element).find('p').text();
+        return fullText.split('$')[0].trim(); // get substring before the first '$'
+      }).get();
+    });
+  }
+
+  getLastProductTitle() {
+    return this.getProductItemTitles().then((productTitles) => {
+      cy.wrap(productTitles[productTitles.length - 1]).as('lastProductTitle');
+    });
   }
 
   scrollToSelectedProduct(selectedProduct: string) {
@@ -14,7 +28,8 @@ export default class ProductListPage {
   }
 
   selectProduct(productName: string) {
-    cy.contains(productName)
+    //ISSUE: selector is too broad
+    return cy.contains(productName)
       .first()
       .parent()
       .within(() => {
