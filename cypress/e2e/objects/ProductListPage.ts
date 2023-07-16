@@ -23,6 +23,7 @@ export default class ProductListPage {
   }
 
   scrollToSelectedProduct(selectedProduct: string) {
+    //ISSUE: selector is too broad
     cy.contains(selectedProduct).scrollIntoView()
     .should('be.visible')
   }
