@@ -25,7 +25,7 @@ const Checkbox = ({ className, label, handleOnChange }: IProps) => {
           data-testid="checkbox"
         />
 
-        <span className="checkmark">{label}</span>
+        <span className="checkmark" data-testid="trigger-check">{label}</span>
       </label>
     </div>
   );
